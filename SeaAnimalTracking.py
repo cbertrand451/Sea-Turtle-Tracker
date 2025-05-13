@@ -110,6 +110,7 @@ st.sidebar.markdown(f"Max Speed: {max_speed} {speed_unit}")
 st.sidebar.markdown(f"Total Moves: {len(df_selected)}")
 st.sidebar.markdown(f"Longest Move: {longest_move} {distance_unit}")
 st.sidebar.markdown('---')
+
 #Time
 st.sidebar.subheader("Time Metrics")
 #computing start and end times to clean up the text
@@ -135,8 +136,14 @@ st.sidebar.markdown(f"Ending Location: ({df_selected['latitude_end'].iloc[-1]}, 
 df_selected['mid_lat'] = (df_selected['latitude_begin'] + df_selected['latitude_end']) / 2
 df_selected['mid_lon'] = (df_selected['longitude_begin'] + df_selected['longitude_end']) / 2
 st.sidebar.markdown(f"Center of Path: ({round(df_selected['mid_lat'].mean(), 2)}, {round(df_selected['mid_lon'].mean(), 2)})")
+center_path = st.sidebar.toggle("Show Center Point")
+st.sidebar.caption("Center Point does not show Spherical (Geographic) Mean. Point may not fall in the correct spt if the turtle path cross the INternational Date Line.")
 
-
+#set dataframe for center path point
+df_center = pd.DataFrame([{
+    'lat': df_selected['mid_lat'].mean(),
+    'lon': df_selected['mid_lon'].mean()
+}])
 
 #set colors
 line_color = [255, 255, 255]
@@ -189,13 +196,26 @@ end_layer = pdk.Layer(
     radiusMaxPixels=25, 
 )
 
+center_layer = pdk.Layer(
+    "ScatterplotLayer",
+    data=df_center,
+    get_position='[lon, lat]',
+    get_color=[160, 32, 240],  
+    get_radius=2000, 
+    radiusScale=10, 
+    radiusMinPixels=6, 
+    radiusMaxPixels=50, 
+)
+layers_ = [layer, point_layer, start_layer, end_layer]
+if center_path:
+    layers_ = [layer, point_layer, start_layer, end_layer, center_layer]
 
 #this is the state that is shown when the turtle is selected
 view_state = pdk.ViewState(latitude=df_selected['latitude_begin'].mean(), 
                            longitude=df_selected['longitude_begin'].mean(), 
                            zoom=4, pitch=0)
 
-r = pdk.Deck(layers=[layer, point_layer, start_layer, end_layer], initial_view_state=view_state, tooltip={"text": "Time: {time_string}"})
+r = pdk.Deck(layers=layers_, initial_view_state=view_state, tooltip={"text": "Time: {time_string}"})
 
 st.pydeck_chart(r)
 
@@ -211,11 +231,9 @@ st.caption("^Article used to help filter and calculate possible max speeds")
 
 
 #st.subheader("notes for me")
-#st.markdown("add distance between points by creating a column called distance since last")
-#st.markdown('there is already a column called "time_diff" for df_selected that shows diference between times.^^')
-#st.markdown("add an option to switch between kms and miles")
 #st.markdown("add option to show all turtles at once (have different colors too)")
 #st.markdown("add slider to show time")
 #st.markdown("create option for animation")
 #st.markdown('create a switch to turn on a point for the center of path (mean of lat/lon)')
-
+#st.markdown("add distance between points by creating a column called distance since last")
+#st.markdown('there is already a column called "time_diff" for df_selected that shows diference between times.^^')
