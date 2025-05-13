@@ -28,22 +28,26 @@ st.markdown("This visualization follows the path of 17 different juvenile Logger
 " Zoom in to see plotted data points with datetime information." \
 " Enjoy!")
 
-fun_names = st.toggle("Fun Names")
-
 st.markdown("---")
 
 #these are all the options of turtles (switch between fun names as well)
 series_options = df_turtles['series_id'].unique()
+#fun name list
 names = ['vino', 'forklift', 'sand bag', 'marty mchichken']
+#pairs names with the id name
 name_map = {name: id_ for name, id_ in zip(names, series_options)}
-if fun_names:
-    dropdown_options = list(name_map.keys())  # Show fun names
+#if/else statement for if fun names are selected
+if st.session_state.get("fun_names"):
+    dropdown_options = list(name_map.keys())  
     label_to_id = name_map
 else:
     dropdown_options = list(series_options)
     label_to_id = {str(id_): id_ for id_ in series_options}
 #select which turtle is being shown
 selected_series = st.selectbox("Select Turtle:", dropdown_options)
+#true copy of the name so that it can be displayed in sidebar
+string_name = selected_series
+#redefining selected series as the id number no matter what 
 selected_series = label_to_id[selected_series]
 
 ##clean/wrangle selected turtle data
@@ -109,7 +113,7 @@ df_end = pd.DataFrame([{
 
 ##creating sidebar 
 st.sidebar.title("Turtle Description")
-st.sidebar.markdown(f"Selected Turtle: **{selected_series}**")
+st.sidebar.markdown(f"Selected Turtle: **{string_name}**")
 unit = st.sidebar.radio("Select Unit", ["Kilometers", "Miles"])
 st.sidebar.markdown('---')
 
@@ -244,6 +248,9 @@ view_state = pdk.ViewState(latitude=df_selected['latitude_begin'].mean(),
 r = pdk.Deck(layers=layers_, initial_view_state=view_state, tooltip={"text": "Time: {time_string}"})
 
 st.pydeck_chart(r)
+
+#hidden fun names option
+fun_names = st.toggle("Fun Names", key="fun_names")
 
 ##Citations
 st.subheader("Data Set Citation:")
