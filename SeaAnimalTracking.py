@@ -84,17 +84,32 @@ df_end = pd.DataFrame([{
 ##creating sidebar 
 st.sidebar.title("Turtle Description")
 st.sidebar.markdown(f"Selected Turtle: **{selected_series}**")
+unit = st.sidebar.radio("Select Unit", ["Kilometers", "Miles"])
 st.sidebar.markdown('---')
 
 #Movement
-st.sidebar.subheader("Movement Metrics")
-st.sidebar.markdown(f"Total Distance: {round(df_selected['length_km'].sum(), 3)} km")
-st.sidebar.markdown(f"Average Speed: {round(df_selected['speed_kph'].mean(), 3)} km/hr")
-st.sidebar.markdown(f"Max Speed: {round(df_selected[df_selected['speed_kph'] <= 24]['speed_kph'].max(), 3)} km/hr")
-st.sidebar.markdown(f"Total Moves: {len(df_selected)}")
-st.sidebar.markdown(f"Longest Move: {df_selected['length_km'].max()} km")
-st.sidebar.markdown('---')
+if unit == "Kilometers":
+    total_distance = round(df_selected['length_km'].sum(), 3)
+    avg_speed = round(df_selected['speed_kph'].mean(), 3)
+    max_speed = round(df_selected[df_selected['speed_kph'] <= 24]['speed_kph'].max(), 3)
+    longest_move = round(df_selected['length_km'].max(), 3)
+    speed_unit = "km/hr"
+    distance_unit = "km"
+else:
+    total_distance = round(df_selected['length_km'].sum() * 0.621371, 3)
+    avg_speed = round(df_selected['speed_kph'].mean() * 0.621371, 3)
+    max_speed = round(df_selected[df_selected['speed_kph'] <= 24]['speed_kph'].max() * 0.621371, 3)
+    longest_move = round(df_selected['length_km'].max() * 0.621371, 3)
+    speed_unit = "mph"
+    distance_unit = "miles"
 
+# Display values
+st.sidebar.markdown(f"Total Distance: {total_distance} {distance_unit}")
+st.sidebar.markdown(f"Average Speed: {avg_speed} {speed_unit}")
+st.sidebar.markdown(f"Max Speed: {max_speed} {speed_unit}")
+st.sidebar.markdown(f"Total Moves: {len(df_selected)}")
+st.sidebar.markdown(f"Longest Move: {longest_move} {distance_unit}")
+st.sidebar.markdown('---')
 #Time
 st.sidebar.subheader("Time Metrics")
 #computing start and end times to clean up the text
