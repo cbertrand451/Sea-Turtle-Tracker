@@ -37,12 +37,14 @@ selected_series = st.selectbox("Select Turtle:", series_options)
 #create selected turtle dataset
 df_series = df_turtles[df_turtles['series_id'] == selected_series].copy()
 
+#creates the parameters for the dataset, basically the starting and stopping times using a slider
 start_time, end_time = st.select_slider(
     "Select a Timeframe", 
     options=df_series['timestamp_begin'].sort_values().unique(),
     value=(df_series['timestamp_begin'].min(), df_series['timestamp_begin'].max())
 )
 
+#dataset is created using the starting and stopping times
 df_selected = df_series[
     (df_series['timestamp_begin'] >= start_time) & 
     (df_series['timestamp_begin'] <= end_time)
@@ -98,7 +100,7 @@ st.sidebar.markdown(f"Selected Turtle: **{selected_series}**")
 unit = st.sidebar.radio("Select Unit", ["Kilometers", "Miles"])
 st.sidebar.markdown('---')
 
-#Movement
+#Movement (if/else is for the miles/kilometer argument)
 if unit == "Kilometers":
     total_distance = round(df_selected['length_km'].sum(), 3)
     avg_speed = round(df_selected['speed_kph'].mean(), 3)
@@ -143,7 +145,7 @@ st.sidebar.subheader("Location Metrics")
 st.sidebar.caption("*Metrics in (Latitude, Longitude) form*")
 st.sidebar.markdown(f"Starting Location: ({df_selected['latitude_begin'].iloc[0]}, {df_selected['longitude_begin'].iloc[0]})")
 st.sidebar.markdown(f"Ending Location: ({df_selected['latitude_end'].iloc[-1]}, {df_selected['longitude_end'].iloc[-1]})")
-
+#helps create the data for the center point
 df_selected['mid_lat'] = (df_selected['latitude_begin'] + df_selected['latitude_end']) / 2
 df_selected['mid_lon'] = (df_selected['longitude_begin'] + df_selected['longitude_end']) / 2
 st.sidebar.markdown(f"Center of Path: ({round(df_selected['mid_lat'].mean(), 2)}, {round(df_selected['mid_lon'].mean(), 2)})")
