@@ -24,15 +24,28 @@ df_turtles = df_turtles.dropna()
 st.title("Tracking Loggerhead Sea Turtles!")
 #description
 st.markdown("This visualization follows the path of 17 different juvenile Loggerhead Sea Turtles from 2002 to 2005. " \
-" Select a turtle in order to see it's path along with descriptive statistics and insights." \
+" Select a turtle in order to see it's path along with descriptive statistics and insights (left sidebar)." \
 " Zoom in to see plotted data points with datetime information." \
 " Enjoy!")
+
+fun_names = st.toggle("Fun Names")
+
 st.markdown("---")
 
-#these are all the options of turtles
+#these are all the options of turtles (switch between fun names as well)
 series_options = df_turtles['series_id'].unique()
+names = ['vino', 'forklift', 'sand bag', 'marty mchichken']
+name_map = {name: id_ for name, id_ in zip(names, series_options)}
+if fun_names:
+    dropdown_options = list(name_map.keys())  # Show fun names
+    label_to_id = name_map
+else:
+    dropdown_options = list(series_options)
+    label_to_id = {str(id_): id_ for id_ in series_options}
 #select which turtle is being shown
-selected_series = st.selectbox("Select Turtle:", series_options)
+selected_series = st.selectbox("Select Turtle:", dropdown_options)
+selected_series = label_to_id[selected_series]
+
 ##clean/wrangle selected turtle data
 #create selected turtle dataset
 df_series = df_turtles[df_turtles['series_id'] == selected_series].copy()
