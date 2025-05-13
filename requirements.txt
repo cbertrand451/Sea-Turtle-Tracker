@@ -3,3 +3,4 @@ pandas
 pydeck 
 os
 numpy 
+pip>=25.1.1
