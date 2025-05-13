@@ -35,7 +35,18 @@ series_options = df_turtles['series_id'].unique()
 selected_series = st.selectbox("Select Turtle:", series_options)
 ##clean/wrangle selected turtle data
 #create selected turtle dataset
-df_selected = df_turtles[df_turtles['series_id'] == selected_series].copy()
+df_series = df_turtles[df_turtles['series_id'] == selected_series].copy()
+
+start_time, end_time = st.select_slider(
+    "Select a Timeframe", 
+    options=df_series['timestamp_begin'].sort_values().unique(),
+    value=(df_series['timestamp_begin'].min(), df_series['timestamp_begin'].max())
+)
+
+df_selected = df_series[
+    (df_series['timestamp_begin'] >= start_time) & 
+    (df_series['timestamp_begin'] <= end_time)
+]
 #sort by time 
 df_selected = df_selected.sort_values('timestamp_begin')
 
@@ -137,7 +148,7 @@ df_selected['mid_lat'] = (df_selected['latitude_begin'] + df_selected['latitude_
 df_selected['mid_lon'] = (df_selected['longitude_begin'] + df_selected['longitude_end']) / 2
 st.sidebar.markdown(f"Center of Path: ({round(df_selected['mid_lat'].mean(), 2)}, {round(df_selected['mid_lon'].mean(), 2)})")
 center_path = st.sidebar.toggle("Show Center Point")
-st.sidebar.caption("Center Point does not show Spherical (Geographic) Mean. Point may not fall in the correct spt if the turtle path cross the INternational Date Line.")
+st.sidebar.caption("Center Point does not show Spherical (Geographic) Mean. This point may not fall in the correct spot if the turtle path crosses the International Date Line.")
 
 #set dataframe for center path point
 df_center = pd.DataFrame([{
@@ -231,9 +242,8 @@ st.caption("^Article used to help filter and calculate possible max speeds")
 
 
 #st.subheader("notes for me")
-#st.markdown("add option to show all turtles at once (have different colors too)")
 #st.markdown("add slider to show time")
 #st.markdown("create option for animation")
-#st.markdown('create a switch to turn on a point for the center of path (mean of lat/lon)')
+#st.markdown("add option to show all turtles at once (have different colors too)")
 #st.markdown("add distance between points by creating a column called distance since last")
 #st.markdown('there is already a column called "time_diff" for df_selected that shows diference between times.^^')
