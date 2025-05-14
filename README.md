@@ -3,15 +3,15 @@
 This Streamlit web app visualizes the real-world movement of juvenile loggerhead sea turtles using satellite-based GPS tracking data from 2002-2005. This project uses data from OBIS-SEAMAP. Each turtle's path is drawn on an interactive map, along with rich summary statistics including distance traveled, speed, and location metrics.
 
 ## Features
-Interactive Map — View each turtle's GPS path across the ocean using pydeck.
+Interactive Map - View each turtle's GPS path across the ocean using pydeck.
 
-Turtle Selection — Choose individual turtles to explore their movement patterns.
+Turtle Selection - Choose individual turtles to explore their movement patterns.
 
-Turtle Metrics Sidebar — See segment count, total distance, average speed, and start/end dates.
+Turtle Metrics Sidebar - See segment count, total distance, average speed, and start/end dates.
 
-Visual Cues — Green and red markers highlight starting and ending locations.
+Visual Cues - Green and red markers highlight starting and ending locations.
 
-Responsive Layout — Built with Streamlit's column layout for a dashboard-like experience.
+Responsive Layout - Built with Streamlit's column layout for a dashboard-like experience.
 
 ---
 
