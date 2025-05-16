@@ -33,7 +33,7 @@ st.markdown("---")
 #these are all the options of turtles (switch between fun names as well)
 series_options = df_turtles['series_id'].unique()
 #fun name list
-names = ['vino', 'forklift', 'sand bag', 'marty mchichken']
+names = ['vino', 'forklift', 'sand bag', 'marty mchichken', 'walter clayton jr.', 'puka', 'chief']
 #pairs names with the id name
 name_map = {name: id_ for name, id_ in zip(names, series_options)}
 #if/else statement for if fun names are selected
