@@ -22,6 +22,7 @@ df_turtles = df_turtles.dropna()
 ##create UI
 #title of the page
 st.title("Tracking Loggerhead Sea Turtles!")
+st.caption('By Colin Bertrand')
 #description
 st.markdown("This visualization follows the path of 17 different juvenile Loggerhead Sea Turtles from 2002 to 2005. " \
 " Select a turtle in order to see it's path along with descriptive statistics and insights (left sidebar)." \
