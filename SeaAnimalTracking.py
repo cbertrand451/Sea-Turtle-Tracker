@@ -142,7 +142,7 @@ st.sidebar.markdown(f"Total Distance: {total_distance} {distance_unit}")
 st.sidebar.markdown(f"Average Speed: {avg_speed} {speed_unit}")
 st.sidebar.markdown(f"Max Speed: {max_speed} {speed_unit}")
 st.sidebar.markdown(f"Total Moves: {len(df_selected)}")
-st.sidebar.markdown(f"Average Distance Moved: {average_move} {distance_unit}")
+st.sidebar.markdown(f"Average Move: {average_move} {distance_unit}")
 st.sidebar.markdown(f"Longest Move: {longest_move} {distance_unit}")
 st.sidebar.markdown('---')
 
